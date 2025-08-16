@@ -43,13 +43,13 @@ int main() {
     getline(cin, userInput);
 
     // Append input to the file
-    ofstream outFile(inputFilename, ios::app); // 'app' mode for appending
+    ofstream outFile(inputFilename, ios::app);
     if (!outFile) {
         cerr << "Error opening file for appending: " << inputFilename << endl;
         return 1;
     }
 
-    outFile << userInput << endl;  // Add newline for separation
+    outFile << userInput << endl;
     outFile.close();
 
     // Reverse file content and write to another file
