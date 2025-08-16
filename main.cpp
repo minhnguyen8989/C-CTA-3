@@ -1,44 +1,59 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+
 using namespace std;
 
+// Reverse text function
+void reverseFileContent(const string& inputFile, const string& outputFile) {
+    ifstream inFile(inputFile);
+    if (!inFile) {
+        cerr << "Error opening file: " << inputFile << endl;
+        return;
+    }
+
+    // Read the text of the file
+    string content((istreambuf_iterator<char>(inFile)), istreambuf_iterator<char>());
+    inFile.close();
+
+    // Reverse the text
+    reverse(content.begin(), content.end());
+
+    // Write reverse text to the output file
+    ofstream outFile(outputFile);
+    if (!outFile) {
+        cerr << "Error creating file: " << outputFile << endl;
+        return;
+    }
+
+    outFile << content;
+    outFile.close();
+
+    cout << "Reversed content written to " << outputFile << endl;
+}
+
 int main() {
-    int interger_1, interger_2, interger_3;
+    const string inputFilename = "CSC450_CT5_mod5.txt";
+    const string reversedFilename = "CSC450-mod5-reverse.txt";
 
-    cout << "Enter first integer: ";
-    cin >> interger_1;
+    // Get user input
+    string userInput;
+    cout << "Enter text to append to the file: ";
+    getline(cin, userInput);
 
-    cout << "Enter second integer: ";
-    cin >> interger_2;
+    // Append input to the file
+    ofstream outFile(inputFilename, ios::app); // 'app' mode for appending
+    if (!outFile) {
+        cerr << "Error opening file for appending: " << inputFilename << endl;
+        return 1;
+    }
 
-    cout << "Enter third integer: ";
-    cin >> interger_3;
+    outFile << userInput << endl;  // Add newline for separation
+    outFile.close();
 
-    // Pointers for each variable
-    int* ptrA = new int(interger_1);
-    int* ptrB = new int(interger_2);
-    int* ptrC = new int(interger_3);
-
-    // Display the values stored in the variables
-    cout << "\nValues of the variables:\n";
-    cout << "Interer #1 = " << interger_1 << "\n";
-    cout << "Interer #2 = " << interger_2 << "\n";
-    cout << "Interer #3 = " << interger_3 << "\n";
-
-    // Display the values using the pointers
-    cout << "\nValues using pointers:\n";
-    cout << "*poiter #1 = " << *ptrA << "\n";
-    cout << "*poiter #2 = " << *ptrB << "\n";
-    cout << "*poiter #3 = " << *ptrC << "\n";
-
-    // Delete operators to management memory
-    delete ptrA;
-    delete ptrB;
-    delete ptrC;
-
-    // Set pointers to nullptr for safety
-    ptrA = nullptr;
-    ptrB = nullptr;
-    ptrC = nullptr;
+    // Reverse file content and write to another file
+    reverseFileContent(inputFilename, reversedFilename);
 
     return 0;
 }
